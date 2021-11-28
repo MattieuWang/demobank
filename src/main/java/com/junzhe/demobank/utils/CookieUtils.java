@@ -42,6 +42,7 @@ public class CookieUtils {
             cookie.setSecure(true);
         }
         cookie.setHttpOnly(true);
+        System.out.println(cookie.getValue());
         response.addCookie(cookie);
     }
 
@@ -52,7 +53,7 @@ public class CookieUtils {
         if (path != null) {
             cookie.setPath(path);
         }
-        cookie.setMaxAge(-1000);
+        cookie.setMaxAge(0);
         response.addCookie(cookie);
     }
 
@@ -70,6 +71,13 @@ public class CookieUtils {
         } catch (Exception ignored){ }
         return null;
 
+    }
+
+    public static void refreshToken(String session) {
+        Claims claims = getSessionClaim(session);
+        if (claims != null) {
+            claims.setExpiration(new Date(System.currentTimeMillis()+EXPIRE));
+        }
     }
 
     public static String generateJWT(JwtUser user){

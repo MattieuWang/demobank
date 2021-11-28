@@ -45,6 +45,7 @@ public class SessionFilter implements Filter {
         String token = getAccessToken(request);
         if (token != null && CookieUtils.getSessionClaim(token) != null) {
             Claims claims = CookieUtils.getSessionClaim(token);
+            sessionManager.refreshSession(request, response);
             return !CookieUtils.isExpired(claims) && claims.getSubject().equals(sessionManager.getCurrentUser().getUsername());
         }
 
@@ -86,7 +87,6 @@ public class SessionFilter implements Filter {
                 op.setOperationName(OperationName.WITHDRAW);
                 op.setReceipt(sessionManager.getSession().getReceipt());
             }
-            sessionManager.refreshSession(request, response);
             if (op.getOperationName() != null) {
                 sessionManager.addOperation(op);
                 logMsg += op.toString();

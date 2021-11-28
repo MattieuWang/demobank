@@ -36,14 +36,13 @@ public class SessionManager {
         return currentSession;
     }
 
-    public String setSessionUser(JwtUser user, HttpServletRequest request, HttpServletResponse response) {
+    public void setSessionUser(JwtUser user, HttpServletRequest request, HttpServletResponse response) {
         String ip = request.getRemoteAddr();
         currentSession = sessions.getOrDefault(ip, new Session());
         String jwt = getJwt(request);
         jwt = CookieUtils.generateJWT(user);
         CookieUtils.addCookie(TOKEN, jwt, "/", request, response);
         currentSession.setCurrent(user);
-        return jwt;
     }
 
     public void refreshSession(HttpServletRequest request, HttpServletResponse response) {
