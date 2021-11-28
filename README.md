@@ -11,6 +11,9 @@ The server will maintain only one session of the user per IP address. And will l
 There will be a jwt cookie saved on the client side and the server will check the cookie with the internal session for every request. 
 Every operation will be recorded and logged in console.
 
+The jar and the docker file are in repository docker. You can deploy it directly.
+PS: I haven't add the tests becaused I'm quite occupied these days. If you want, just send me an email, I'll add them.
+
 # Instructions
 1. To create a new user account in the server, you need to POST localhost:8080/auth/user with the JSON below:
 ```
