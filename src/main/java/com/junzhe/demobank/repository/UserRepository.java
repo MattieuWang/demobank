@@ -109,8 +109,8 @@ public class UserRepository {
         return "test";
     }
 
-    public List<Operation> getOperations() {
-        return sessionManager.getOperations();
+    public List<Operation> getOperations(int num) {
+        return sessionManager.getOperations(num);
     }
 
 }

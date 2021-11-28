@@ -65,11 +65,13 @@ public class SessionManager {
         return CookieUtils.getCookie(request, TOKEN);
     }
 
-    public List<Operation> getOperations() {
+    public List<Operation> getOperations(int num) {
         List<String> op_ids = user_op.getOrDefault(currentSession.getCurrent().getId(), new ArrayList<>());
-        System.out.println(op_ids);
-        System.out.println(operations.stream().filter(op -> op_ids.contains(op.getId())).toList());
-        return operations.stream().filter(op -> op_ids.contains(op.getId())).toList();
+        List<Operation> ops = operations.stream().filter(op -> op_ids.contains(op.getId())).toList();
+        int size = ops.size() / 5;
+        int start = Math.min(num - 1, size) * 5;
+        int end = Math.min(start + 5, ops.size());
+        return ops.subList(start, end);
     }
 
     public void addOperation(Operation op) {

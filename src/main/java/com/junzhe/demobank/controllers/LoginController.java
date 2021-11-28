@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -21,7 +22,7 @@ public class LoginController {
     UserRepository userRepository;
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody UserPayload payload,
+    public ResponseEntity<Object> login(@Valid @RequestBody UserPayload payload,
                                         HttpServletRequest request, HttpServletResponse response) throws Exception {
         try {
             JwtUser jwtUser = userRepository.login(payload, request, response);
@@ -45,7 +46,7 @@ public class LoginController {
     }
 
     @PostMapping("/user")
-    public ResponseEntity<JwtUser> createUser(@RequestBody UserPayload payload,
+    public ResponseEntity<JwtUser> createUser(@Valid @RequestBody UserPayload payload,
                                               HttpServletRequest request, HttpServletResponse response) {
         try {
             JwtUser jwtUser = userRepository.createUser(payload, request, response);

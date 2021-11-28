@@ -86,10 +86,12 @@ public class SessionFilter implements Filter {
                 op.setOperationName(OperationName.WITHDRAW);
                 op.setReceipt(sessionManager.getSession().getReceipt());
             }
-            sessionManager.addOperation(op);
             sessionManager.refreshSession(request, response);
-            logMsg += op.toString();
-            logger.info(logMsg);
+            if (op.getOperationName() != null) {
+                sessionManager.addOperation(op);
+                logMsg += op.toString();
+                logger.info(logMsg);
+            }
         }
     }
 

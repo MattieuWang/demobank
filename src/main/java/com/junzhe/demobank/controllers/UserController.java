@@ -33,10 +33,11 @@ public class UserController {
         }
     }
 
-    @GetMapping("/operations")
-    public ResponseEntity<List<Operation>> getOperations () {
+    @GetMapping(value = {"/operations", "/operations/{num}"})
+    public ResponseEntity<List<Operation>> getOperations (@PathVariable(name = "num", required = false) Integer num) {
         try {
-            List<Operation> ops = userRepository.getOperations();
+            num = num == null || num < 1 ? 1 : num;
+            List<Operation> ops = userRepository.getOperations(num);
             return new ResponseEntity<>(ops, HttpStatus.OK);
         } catch (Exception e) {
             throw new ResponseStatusException(
