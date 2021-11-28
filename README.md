@@ -55,7 +55,7 @@ If success, it will return a receipt:
     "op": "DEPOSIT"
 }
 ```
-4.  To check the operation records: GET localhost:8080/user/operations which will return a list of operations
+4.  To check the operation records: GET localhost:8080/user/operations/{num} which will return a list of operations. The list is paginated and every page will show 5 operations. If the num is not given, then will be 1 by default.
 5.  To login: POST localhost:8080/auth/login, with the JSON below
 ```
 {
