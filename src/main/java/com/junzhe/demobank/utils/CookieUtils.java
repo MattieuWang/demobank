@@ -42,7 +42,6 @@ public class CookieUtils {
             cookie.setSecure(true);
         }
         cookie.setHttpOnly(true);
-        System.out.println(cookie.getValue());
         response.addCookie(cookie);
     }
 
