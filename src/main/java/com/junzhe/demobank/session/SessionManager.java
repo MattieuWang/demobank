@@ -1,6 +1,6 @@
 package com.junzhe.demobank.session;
 
-import com.junzhe.demobank.models.JwtUser;
+import com.junzhe.demobank.models.user.JwtUser;
 import com.junzhe.demobank.models.operations.Operation;
 import com.junzhe.demobank.models.Session;
 import com.junzhe.demobank.utils.CookieUtils;

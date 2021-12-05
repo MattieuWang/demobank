@@ -1,4 +1,4 @@
-package com.junzhe.demobank.models;
+package com.junzhe.demobank.models.user;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

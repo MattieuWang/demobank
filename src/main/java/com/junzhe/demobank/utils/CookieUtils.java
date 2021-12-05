@@ -1,6 +1,6 @@
 package com.junzhe.demobank.utils;
 
-import com.junzhe.demobank.models.JwtUser;
+import com.junzhe.demobank.models.user.JwtUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

@@ -2,6 +2,7 @@ package com.junzhe.demobank.controllers;
 
 import com.junzhe.demobank.models.Receipt;
 import com.junzhe.demobank.models.operations.Operation;
+import com.junzhe.demobank.models.user.UserInfo;
 import com.junzhe.demobank.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,9 +23,9 @@ public class UserController {
     private UserRepository userRepository;
 
     @GetMapping("")
-    public ResponseEntity<String> getUserInfo() {
+    public ResponseEntity<UserInfo> getUserInfo() {
         try {
-            String info = userRepository.getCurrentUserIfo();
+            UserInfo info = userRepository.getCurrentUserIfo();
             return new ResponseEntity<>(info, HttpStatus.OK);
         } catch (Exception e) {
             throw new ResponseStatusException(

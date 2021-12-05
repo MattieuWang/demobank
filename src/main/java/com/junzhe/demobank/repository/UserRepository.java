@@ -3,6 +3,10 @@ package com.junzhe.demobank.repository;
 import com.junzhe.demobank.models.*;
 import com.junzhe.demobank.models.operations.Operation;
 import com.junzhe.demobank.models.operations.OperationName;
+import com.junzhe.demobank.models.user.JwtUser;
+import com.junzhe.demobank.models.user.User;
+import com.junzhe.demobank.models.user.UserInfo;
+import com.junzhe.demobank.models.user.UserPayload;
 import com.junzhe.demobank.session.SessionManager;
 import com.junzhe.demobank.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,16 +29,16 @@ public class UserRepository {
         this.users = new HashMap<>();
     }
 
-    public String getCurrentUserIfo() {
+    public UserInfo getCurrentUserIfo() {
         JwtUser jwtUser = sessionManager.getCurrentUser();
         if (jwtUser == null) {
-            return "";
+            return null;
         }
         User user = users.getOrDefault(jwtUser.getId(), null);
         if (user == null) {
-            return "";
+            return null;
         }
-        return user.toJson();
+        return new UserInfo(user.getId(), user.getUsername(), user.getBalance());
     }
 
     public JwtUser createUser(UserPayload payload, HttpServletRequest request, HttpServletResponse response) {

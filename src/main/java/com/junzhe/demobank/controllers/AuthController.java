@@ -1,7 +1,7 @@
 package com.junzhe.demobank.controllers;
 
-import com.junzhe.demobank.models.JwtUser;
-import com.junzhe.demobank.models.UserPayload;
+import com.junzhe.demobank.models.user.JwtUser;
+import com.junzhe.demobank.models.user.UserPayload;
 import com.junzhe.demobank.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,23 +12,19 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
-public class LoginController {
+public class AuthController {
 
     @Autowired
     UserRepository userRepository;
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@Valid @RequestBody UserPayload payload,
+    public ResponseEntity<JwtUser> login(@Valid @RequestBody UserPayload payload,
                                         HttpServletRequest request, HttpServletResponse response) throws Exception {
         try {
             JwtUser jwtUser = userRepository.login(payload, request, response);
-            if (jwtUser == null) {
-                return new ResponseEntity<>(new Error("Internal Error"), HttpStatus.INTERNAL_SERVER_ERROR);
-            }
             return new ResponseEntity<>(jwtUser, HttpStatus.OK);
         } catch (Exception e) {
             throw new ResponseStatusException(

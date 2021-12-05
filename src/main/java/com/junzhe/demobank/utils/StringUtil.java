@@ -1,13 +1,7 @@
 package com.junzhe.demobank.utils;
 
-import com.junzhe.demobank.models.JwtUser;
-import com.junzhe.demobank.models.User;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
-import java.util.Date;
 import java.util.UUID;
 
 public class StringUtil {

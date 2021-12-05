@@ -1,4 +1,4 @@
-package com.junzhe.demobank.models;
+package com.junzhe.demobank.models.user;
 
 import lombok.Getter;
 import lombok.Setter;

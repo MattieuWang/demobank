@@ -28,7 +28,7 @@ public class SessionFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
-        if (httpRequest.getServletPath().startsWith("/auth") && !httpRequest.getServletPath().contains("logout")) {
+        if (httpRequest.getRequestURI().startsWith("/auth") && !httpRequest.getServletPath().contains("logout")) {
             filterChain.doFilter(servletRequest, servletResponse);
             logOperations(httpRequest, httpResponse);
             return;
@@ -70,7 +70,7 @@ public class SessionFilter implements Filter {
     }
 
     private void logOperations(HttpServletRequest request, HttpServletResponse response) {
-        if (request.getServletPath().contains("logout"))
+        if (request.getRequestURI().contains("logout"))
             return;
         Logger logger = LoggerFactory.getLogger(SessionFilter.class);
         if (response.getStatus() == 200) {
@@ -78,12 +78,12 @@ public class SessionFilter implements Filter {
             String logMsg = "Request URL:" + request.getRequestURL().toString() + "  ";
             String user_id = sessionManager.getCurrentUser().getId();
             op.setUser_id(user_id);
-            if (request.getServletPath().startsWith("/auth")) {
+            if (request.getRequestURI().startsWith("/auth")) {
                 op.setOperationName(OperationName.LOG_IN);
-            } else if (request.getServletPath().contains("deposit")) {
+            } else if (request.getRequestURI().contains("deposit")) {
                 op.setOperationName(OperationName.DEPOSIT);
                 op.setReceipt(sessionManager.getSession().getReceipt());
-            } else if (request.getServletPath().contains("withdraw")) {
+            } else if (request.getRequestURI().contains("withdraw")) {
                 op.setOperationName(OperationName.WITHDRAW);
                 op.setReceipt(sessionManager.getSession().getReceipt());
             }
