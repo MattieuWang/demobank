@@ -9,13 +9,13 @@ import com.junzhe.demobank.models.user.UserInfo;
 import com.junzhe.demobank.models.user.UserPayload;
 import com.junzhe.demobank.repository.UserRepository;
 import com.junzhe.demobank.session.SessionManager;
-import jdk.nashorn.internal.runtime.regexp.joni.exception.InternalException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService{
             User user = repository.getCurrentUserInfo(sessionManager.getCurrentUser());
             return new UserInfo(user.getId(), user.getUsername(), user.getBalance());
         } catch (Exception e) {
-            throw new InternalException("User not found");
+            throw new NoSuchElementException("User not found");
         }
     }
 

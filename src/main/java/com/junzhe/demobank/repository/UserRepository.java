@@ -4,7 +4,6 @@ import com.junzhe.demobank.models.user.JwtUser;
 import com.junzhe.demobank.models.user.User;
 import com.junzhe.demobank.models.user.UserPayload;
 import com.junzhe.demobank.utils.StringUtil;
-import jdk.nashorn.internal.runtime.regexp.joni.exception.InternalException;
 import org.springframework.stereotype.Repository;
 import java.util.*;
 
@@ -23,7 +22,7 @@ public class UserRepository {
 
     public User createUser(UserPayload payload) {
         if (users.containsKey(payload.getUsername())) {
-            throw new InternalException("User already exists, please log in");
+            throw new IllegalArgumentException("User already exists, please log in");
         }
         User user = new User(payload.getUsername(), StringUtil.encryptPW(payload.getPassword()));
         users.put(user.getUsername(), user);

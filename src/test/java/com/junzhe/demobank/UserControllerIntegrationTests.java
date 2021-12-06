@@ -44,7 +44,7 @@ class UserControllerIntegrationTests {
 
 	@Test
 	public void checkUserInfoWithSession_thenStatus200() throws Exception {
-		String username = "test";
+		String username = "user";
 		String password = "test111";
 		Cookie cookie = createTestSession(username, password);
 
@@ -78,7 +78,7 @@ class UserControllerIntegrationTests {
 
 	@Test
 	public void depositWithValidAmount_thenStatus200 () throws Exception{
-		String username = "test1";
+		String username = "user1";
 		String password = "test111";
 		Cookie cookie = createTestSession(username, password);
 		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
@@ -101,7 +101,7 @@ class UserControllerIntegrationTests {
 
 	@Test
 	public void depositWithInvalidAmount_thenStatus400 () throws Exception{
-		String username = "test2";
+		String username = "user2";
 		String password = "test111";
 		Cookie cookie = createTestSession(username, password);
 		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
@@ -119,7 +119,7 @@ class UserControllerIntegrationTests {
 
 	@Test
 	public void withdrawWithValidAmount_thenStatus200 () throws Exception{
-		String username = "test3";
+		String username = "user3";
 		String password = "test111";
 		Cookie cookie = createTestSession(username, password);
 		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
@@ -146,7 +146,7 @@ class UserControllerIntegrationTests {
 
 	@Test
 	public void withdrawWithInvalidAmount_thenStatus400 () throws Exception{
-		String username = "test4";
+		String username = "user4";
 		String password = "test111";
 		Cookie cookie = createTestSession(username, password);
 		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
@@ -165,7 +165,7 @@ class UserControllerIntegrationTests {
 
 	@Test
 	public void checkOptions_thenStatus200 () throws Exception {
-		String username = "test5";
+		String username = "user5";
 		String password = "test111";
 		Cookie cookie = createTestSession(username, password);
 		mvc.perform(get("/user/operations")
