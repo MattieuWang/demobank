@@ -11,9 +11,32 @@ The server will maintain only one session of the user per IP address. And will l
 There will be a jwt cookie saved on the client side and the server will check the cookie with the internal session for every request. 
 Every operation will be recorded and logged in console.
 
+# Structure
+controllers:
+1. AuthController : contorl the creation of new account, login, logout
+2. UserController : control the actions, deposit, withdraw, check operations
+
+services:
+1. UserService : control all the actions above
+2. SessionManager : maintain, refresh and destroy the session
+
+models:
+1. User : saved in the session with all information
+2. JwtUser : only contain id and username, used for generating the jwt cookie
+3. UserPayload : used when login or creating a new account
+4. Session : contain the user and other information for this session
+5. Receipt : returned as the response after depositing or withdrawing successfully
+6. Operation : deposit and withdraw
+
+filter:
+1. SessionFilter : check the jwt cookie for every request before calling the controllers and also log the operations when success
+
+exception handler:
+1. AppExceptionHandler : handler all the exceptions (e.g. Internal Server Error, IllegalArgument) before giving the response
+
+
 The jar and the docker file are in repository docker. You can deploy it directly.
 
-PS: I haven't add the tests becaused I'm quite occupied these days. If you want, just send me an email, I'll add them.
 
 # Instructions
 1. To create a new user account in the server, you need to POST localhost:8080/auth/user with the JSON below:
