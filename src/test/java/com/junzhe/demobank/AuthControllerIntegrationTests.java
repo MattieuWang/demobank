@@ -2,7 +2,12 @@ package com.junzhe.demobank;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.junzhe.demobank.models.user.JwtUser;
 import com.junzhe.demobank.models.user.UserPayload;
+import com.junzhe.demobank.utils.CookieUtils;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -50,7 +55,7 @@ public class AuthControllerIntegrationTests {
 
     @Test
     public void loginWithValidParams_thenStatus200() throws Exception {
-        String username = "test";
+        String username = "test1";
         String password = "test111";
         Cookie cookie = createTestSession(username, password);
         UserPayload userPayload = new UserPayload();
@@ -70,7 +75,7 @@ public class AuthControllerIntegrationTests {
 
     @Test
     public void loginWithInValidParams_thenStatus500() throws Exception {
-        String username = "test";
+        String username = "test2";
         String password = "test111";
         Cookie cookie = createTestSession(username, password);
         UserPayload userPayload = new UserPayload();
@@ -82,10 +87,22 @@ public class AuthControllerIntegrationTests {
                         .cookie(cookie)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson))
-                .andExpect(status().isInternalServerError())
-                .andExpect(result -> assertTrue(result.getResolvedException().getMessage().contains("username or password error")));
+                .andExpect(status().isBadRequest())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.message").value("username or password error"));
     }
 
+    @Test
+    public void logoutWithSession_thenStatus200() throws Exception {
+        String username = "test3";
+        String password = "test111";
+        Cookie cookie = createTestSession(username, password);
+        mvc.perform(post("/auth/logout")
+                .cookie(cookie))
+                .andExpect(status().isOk())
+                .andExpect(content().string("logout successfully"));
+    }
 
 
 }

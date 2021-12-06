@@ -78,7 +78,7 @@ class UserControllerIntegrationTests {
 
 	@Test
 	public void depositWithValidAmount_thenStatus200 () throws Exception{
-		String username = "test";
+		String username = "test1";
 		String password = "test111";
 		Cookie cookie = createTestSession(username, password);
 		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
@@ -100,26 +100,26 @@ class UserControllerIntegrationTests {
 	}
 
 	@Test
-	public void depositWithInvalidAmount_thenStatus500 () throws Exception{
-		String username = "test";
+	public void depositWithInvalidAmount_thenStatus400 () throws Exception{
+		String username = "test2";
 		String password = "test111";
 		Cookie cookie = createTestSession(username, password);
 		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 		Map<String, Double> payload = new HashMap<>();
-		double amount = -300;
+		double amount = -300.0;
 		payload.put("amount", amount);
 		String requestJson = ow.writeValueAsString(payload);
 		mvc.perform(post("/user/deposit")
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(requestJson)
 						.cookie(cookie))
-				.andExpect(status().isInternalServerError())
+				.andExpect(status().isBadRequest())
 				.andExpect(result -> assertTrue(result.getResolvedException().getMessage().contains("Input amount error")));
 	}
 
 	@Test
 	public void withdrawWithValidAmount_thenStatus200 () throws Exception{
-		String username = "test";
+		String username = "test3";
 		String password = "test111";
 		Cookie cookie = createTestSession(username, password);
 		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
@@ -145,8 +145,8 @@ class UserControllerIntegrationTests {
 	}
 
 	@Test
-	public void withdrawWithInvalidAmount_thenStatus500 () throws Exception{
-		String username = "test";
+	public void withdrawWithInvalidAmount_thenStatus400 () throws Exception{
+		String username = "test4";
 		String password = "test111";
 		Cookie cookie = createTestSession(username, password);
 		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
@@ -158,14 +158,14 @@ class UserControllerIntegrationTests {
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(requestJson)
 						.cookie(cookie))
-				.andExpect(status().isInternalServerError())
+				.andExpect(status().isBadRequest())
 				.andExpect(result -> assertTrue(result.getResolvedException().getMessage().contains("Input amount error")));
 	}
 
 
 	@Test
 	public void checkOptions_thenStatus200 () throws Exception {
-		String username = "test";
+		String username = "test5";
 		String password = "test111";
 		Cookie cookie = createTestSession(username, password);
 		mvc.perform(get("/user/operations")
@@ -177,41 +177,3 @@ class UserControllerIntegrationTests {
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
