@@ -3,10 +3,12 @@ package com.junzhe.demobank.models;
 import com.junzhe.demobank.models.operations.Operation;
 import com.junzhe.demobank.models.operations.OperationName;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class Receipt{
 
     private String user_id;
