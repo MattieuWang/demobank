@@ -38,4 +38,12 @@ public class Receipt{
                 ", op=" + op +
                 '}';
     }
+
+    public static Receipt receiptFail(String user_id, String username) {
+        Receipt receipt = new Receipt();
+        receipt.setUsername(username);
+        receipt.setUser_id(user_id);
+        receipt.setMsg("Fail");
+        return receipt;
+    }
 }

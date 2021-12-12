@@ -93,7 +93,7 @@ public class UserServiceImplTest {
         assertEquals(receipt.getOp(), OperationName.DEPOSIT);
         verify(repository, times(1)).update(amount, jwtUser);
         verify(manager, times(1)).getCurrentUser();
-        verify(manager, times(1)).getSession();
+        verify(manager, times(2)).getSession();
     }
 
     @Test

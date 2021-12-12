@@ -12,10 +12,12 @@ import com.junzhe.demobank.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.UnavailableException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.concurrent.Semaphore;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -59,25 +61,51 @@ public class UserServiceImpl implements UserService{
     }
 
     public Receipt deposit(double amount) {
-        if (amount <= 0) {
-            throw new IllegalArgumentException("Input amount error");
-        }
+        Semaphore semaphore = sessionManager.getSession().getSemaphore();
         JwtUser jwtUser = sessionManager.getCurrentUser();
-        User user = repository.update(amount, jwtUser);
-        Receipt receipt = new Receipt(jwtUser.getId(), jwtUser.getUsername(), "Success", amount, user.getBalance(), OperationName.DEPOSIT);
-        sessionManager.getSession().setReceipt(receipt);
-        return receipt;
+        try {
+            semaphore.acquire(1);
+            if (amount <= 0) {
+                throw new IllegalArgumentException("Input amount error");
+            }
+            User user = repository.update(amount, jwtUser);
+            Receipt receipt = new Receipt(jwtUser.getId(), jwtUser.getUsername(), "Success", amount, user.getBalance(), OperationName.DEPOSIT);
+            sessionManager.getSession().setReceipt(receipt);
+            return receipt;
+        } catch (InterruptedException e) {
+            try {
+                throw new UnavailableException("Please try later");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } finally {
+            semaphore.release();
+        }
+        return Receipt.receiptFail(jwtUser.getId(), jwtUser.getUsername());
     }
 
     public Receipt withdraw(double amount) {
-        if (amount <= 0) {
-            throw new IllegalArgumentException("Input amount error");
-        }
+        Semaphore semaphore = sessionManager.getSession().getSemaphore();
         JwtUser jwtUser = sessionManager.getCurrentUser();
-        User user = repository.update(amount*-1, jwtUser);
-        Receipt receipt = new Receipt(jwtUser.getId(), jwtUser.getUsername(), "Success", amount, user.getBalance(), OperationName.WITHDRAW);
-        sessionManager.getSession().setReceipt(receipt);
-        return receipt;
+        try {
+            semaphore.acquire(1);
+            if (amount <= 0) {
+                throw new IllegalArgumentException("Input amount error");
+            }
+            User user = repository.update(amount*-1, jwtUser);
+            Receipt receipt = new Receipt(jwtUser.getId(), jwtUser.getUsername(), "Success", amount, user.getBalance(), OperationName.WITHDRAW);
+            sessionManager.getSession().setReceipt(receipt);
+            return receipt;
+        }catch (InterruptedException e) {
+            try {
+                throw new UnavailableException("Please try later");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } finally {
+            semaphore.release();
+        }
+        return Receipt.receiptFail(jwtUser.getId(), jwtUser.getUsername());
     }
 
     public List<Operation> getOperations (int number) {
